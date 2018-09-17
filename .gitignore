@@ -1,0 +1,11 @@
+# Created by .ignore support plugin (hsz.mobi)
+# Ignore the target folder
+target/
+
+# Ignore IntelliJ
+.idea/*
+*.iml
+local.properties.yml
+allure-results/
+allure-report/
+build/
