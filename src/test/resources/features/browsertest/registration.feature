@@ -6,7 +6,7 @@ Feature: User wants to visit the website and perform action(s)
 
   Background: Making use of the official Cucumber page
 
-    Given the user visits the official Cucumber page
+#    Given the user visits the training registration page
 
   Scenario: 1 User logs in with invalid password
-    And the user selects a different tab on the website
+#    And the user selects a different tab on the website

@@ -47,62 +47,6 @@ public class BasePage extends CukeConfigurator {
         this.webDriver = webdriver;
     }
 
-    /* Selectors */
-
-    public static By css(final String format, final Object... args) {
-        return By.cssSelector(format(format, args));
-    }
-
-    public static By id(final String format, final Object... args) {
-        return By.id(format(format, args));
-    }
-
-    public static By appieValue(final String value) {
-        return css("[data-appie='%s']", value);
-    }
-
-    public static By name(final String value) {
-        return css("[name='%s']", value);
-    }
-
-    public static By dataterm(final String value) {
-        return css("[data-term='%s']", value);
-    }
-
-    /**
-     * Retrieve a test hook {@link By locator}. A Test hook on a web element is HTML element attribute with the name
-     * <pre>data-testhookid</pre> The test hook by can be retrieved with optional arguments which are used as in {@link By#cssSelector(String)}
-     *
-     * @param format the test-hook identifier.
-     * @param args   additional arguments for the test-hook identifier.
-     * @return the resolved test-hook locator.
-     */
-    public static By testHook(final String format, final Object... args) {
-        return css("[data-testhookid='%s']", format(format, args));
-    }
-
-    public static By testHookStartsWith(String format, final Object... args) {
-        return css("[data-testhookid^='%s']", format(format, args));
-    }
-
-    public static By testHookStartsWithWithinCss(String css, String testHookId) {
-        return css("%s [data-testhookid^='%s']", css, testHookId);
-    }
-
-    //Used to find another element in the hierarchy of the element of the specified testhook
-    public static By cssWithinTestHook(String testHookId, String css) {
-        return css("[data-testhookid='%s'] %s", testHookId, css);
-    }
-
-    //Used to find elements with the specified testhook plus the extraCSS
-    public static By cssCombinedWithTestHook(String testHookId, String extraCSS) {
-        return css("[data-testhookid='%s']%s", testHookId, extraCSS);
-    }
-
-    public static By testDataHook(final String element) {
-        return css("[data-testhookid='%s']", element);
-    }
-
     /* Webdriver & Browser commands */
 
     private WebDriverWait pauseQuickly() {
@@ -215,20 +159,6 @@ public class BasePage extends CukeConfigurator {
         element.clear();
         element.sendKeys(value);
         Arrays.asList(keys).forEach(element::sendKeys);
-    }
-
-    public void waitForAjaxCallToFinish() {
-        pollVisible(css("html.js-content-ready"));
-    }
-
-    public void waitForShoppinglist() {
-        try {
-            assertPresent(testHook("shoppinglist_quantityshoppinglist"));
-            assertPresentDynamic(
-                    By.xpath("//*[@data-testhookid='shoppinglist_quantityshoppinglist'][contains(@style, 'transform: matrix')]"));
-        } catch (final NoSuchElementException | TimeoutException e) {
-            log.error("Waiting for the shoppinglist to update took too long", e);
-        }
     }
 
     public List<WebElement> elements(final By by) {

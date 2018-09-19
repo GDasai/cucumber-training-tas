@@ -1,9 +1,7 @@
 package com.cucumber.definitions.stepdefs;
 
-import com.cucumber.definitions.pageobjects.BasePage;
 import com.cucumber.definitions.pageobjects.LoginPage;
 import com.cucumber.driver.CukeConfigurator;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
