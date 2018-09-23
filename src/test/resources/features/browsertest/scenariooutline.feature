@@ -5,8 +5,6 @@ Feature: User wants to visit the website and login
   AC 2: The user should be able to enter a password
   AC 3: There should be an error message shown if the user tries to login with incorrect credentials
 
-  Background: Training (test) page to login
-
   Scenario Outline: 1 User logs in with invalid credentials
     Given the user visits the training login page
     When the user enters the username with "<username>"

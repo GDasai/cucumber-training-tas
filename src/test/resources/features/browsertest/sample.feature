@@ -1,8 +1,10 @@
 @Smoketest
 
-Feature: User wants to visit the demo login page
-  AC 1: The user should be able to start a browser
-  AC 2: The user should be able to navigate to the demo login page
+Feature: User wants to visit the website and login
+  AC 1: The user should be able to enter an username
+  AC 2: The user should be able to enter a password
+  AC 3: There should be an error message shown if the user tries to login with incorrect credentials
+  AC 4: The user should be on the Cucumber page if the correct credentials are entered
 
   Scenario: 1 User logs in with valid credentials
     Given the user visits the training login page
