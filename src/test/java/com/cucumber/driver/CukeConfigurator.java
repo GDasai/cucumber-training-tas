@@ -3,10 +3,23 @@ package com.cucumber.driver;
 import com.cucumber.definitions.pageobjects.BasePage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
-import static io.github.bonigarcia.wdm.DriverManagerType.CHROME;
-import static io.github.bonigarcia.wdm.DriverManagerType.FIREFOX;
+import lombok.Setter;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -15,19 +28,8 @@ import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import lombok.Setter;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.firefox.internal.ProfilesIni;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import static io.github.bonigarcia.wdm.DriverManagerType.CHROME;
+import static io.github.bonigarcia.wdm.DriverManagerType.FIREFOX;
 
 @Configuration
 public class CukeConfigurator {
@@ -81,7 +83,8 @@ public class CukeConfigurator {
     // default spring profile for chrome and firefox
     public WebDriver getLocalDriver() {
 
-        if (localBrowserName.contains("chrome")) {
+        if ("chrome".equalsIgnoreCase(localBrowserName)) {
+
             if (chromeDriverVersion.equals("latest")) {
                 ChromeDriverManager.getInstance(CHROME).setup();
 
@@ -95,19 +98,17 @@ public class CukeConfigurator {
             } else {
                 options.addArguments("--start-fullscreen");
             }
-            return new EventFiringWebDriver(new org.openqa.selenium.chrome.ChromeDriver(options));
+            return new EventFiringWebDriver(new ChromeDriver(options));
         }
         if ("firefox".equalsIgnoreCase(localBrowserName)) {
 
             if (firefoxDriverVersion.equals("latest")) {
-                ChromeDriverManager.getInstance(FIREFOX).setup();
+                FirefoxDriverManager.getInstance(FIREFOX).setup();
 
             } else {
                 FirefoxDriverManager.getInstance().version(firefoxDriverVersion);
             }
-            ProfilesIni profile = new ProfilesIni();
-            final FirefoxProfile firefoxProfile = profile.getProfile("CucumberFirefoxProfiel");
-            return new EventFiringWebDriver(new FirefoxDriver(firefoxProfile));
+            return new EventFiringWebDriver(new FirefoxDriver());
         }
         throw new IllegalArgumentException(String.format("Illegal value for browser parameter: %s", localBrowserName));
     }

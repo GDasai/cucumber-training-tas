@@ -1,32 +1,22 @@
 package com.cucumber.definitions.pageobjects;
 
-import static java.lang.String.format;
-import static org.openqa.selenium.support.ui.ExpectedConditions.or;
-import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllElementsLocatedBy;
-import static org.openqa.selenium.support.ui.ExpectedConditions.textToBePresentInElementLocated;
-import static org.openqa.selenium.support.ui.ExpectedConditions.urlContains;
-import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
-
 import com.cucumber.driver.CukeConfigurator;
 import com.google.common.base.Function;
-
-import java.awt.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.util.*;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import lombok.extern.slf4j.Slf4j;
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
 import org.junit.Assert;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NotFoundException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
@@ -34,6 +24,23 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Component;
+
+import java.awt.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import static java.lang.String.format;
+import static org.openqa.selenium.support.ui.ExpectedConditions.or;
+import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllElementsLocatedBy;
+import static org.openqa.selenium.support.ui.ExpectedConditions.textToBePresentInElementLocated;
+import static org.openqa.selenium.support.ui.ExpectedConditions.urlContains;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 @Slf4j
 @SuppressWarnings("unused")
@@ -46,64 +53,6 @@ public class BasePage extends CukeConfigurator {
     public BasePage(final WebDriver webdriver) {
         this.webDriver = webdriver;
     }
-
-    /* Selectors */
-
-    public static By css(final String format, final Object... args) {
-        return By.cssSelector(format(format, args));
-    }
-
-    public static By id(final String format, final Object... args) {
-        return By.id(format(format, args));
-    }
-
-    public static By appieValue(final String value) {
-        return css("[data-appie='%s']", value);
-    }
-
-    public static By name(final String value) {
-        return css("[name='%s']", value);
-    }
-
-    public static By dataterm(final String value) {
-        return css("[data-term='%s']", value);
-    }
-
-    /**
-     * Retrieve a test hook {@link By locator}. A Test hook on a web element is HTML element attribute with the name
-     * <pre>data-testhookid</pre> The test hook by can be retrieved with optional arguments which are used as in {@link By#cssSelector(String)}
-     *
-     * @param format the test-hook identifier.
-     * @param args   additional arguments for the test-hook identifier.
-     * @return the resolved test-hook locator.
-     */
-    public static By testHook(final String format, final Object... args) {
-        return css("[data-testhookid='%s']", format(format, args));
-    }
-
-    public static By testHookStartsWith(String format, final Object... args) {
-        return css("[data-testhookid^='%s']", format(format, args));
-    }
-
-    public static By testHookStartsWithWithinCss(String css, String testHookId) {
-        return css("%s [data-testhookid^='%s']", css, testHookId);
-    }
-
-    //Used to find another element in the hierarchy of the element of the specified testhook
-    public static By cssWithinTestHook(String testHookId, String css) {
-        return css("[data-testhookid='%s'] %s", testHookId, css);
-    }
-
-    //Used to find elements with the specified testhook plus the extraCSS
-    public static By cssCombinedWithTestHook(String testHookId, String extraCSS) {
-        return css("[data-testhookid='%s']%s", testHookId, extraCSS);
-    }
-
-    public static By testDataHook(final String element) {
-        return css("[data-testhookid='%s']", element);
-    }
-
-    /* Webdriver & Browser commands */
 
     private WebDriverWait pauseQuickly() {
         return new WebDriverWait(webDriver, SECONDS_PAGELOAD_REFRESH);
@@ -171,27 +120,6 @@ public class BasePage extends CukeConfigurator {
         assertValidPage();
     }
 
-    /**
-     * Same as openPath but with Basic authentication for the specified path
-     *
-     * @param path url starting with "/"
-     * @param args additional arguments.
-     */
-    public void openPathWithLoginForDev(final String path, final Object... args) {
-        get(format("https://%s:%s@%s%s", dev_login, dev_password, targetHostName, format(path, args)));
-        assertValidPage();
-    }
-
-    /**
-     * Open a site target page
-     *
-     * @param siteTarget The site target to navigate to
-     * @param args       Arguments to insert into the URL string
-     */
-    public void openPageBySiteTarget(final String siteTarget, final Object... args) {
-        openPath("/grid/sitetarget/" + siteTarget, args);
-    }
-
     public Cookie getCookie(String cookieName) {
         return webDriver.manage().getCookieNamed(cookieName);
     }
@@ -208,27 +136,11 @@ public class BasePage extends CukeConfigurator {
         }
     }
 
-    /* ELEMENTS - Interact */
-
     public void inputVisible(final WebElement element, final String value, final Keys... keys) {
         element.click();
         element.clear();
         element.sendKeys(value);
         Arrays.asList(keys).forEach(element::sendKeys);
-    }
-
-    public void waitForAjaxCallToFinish() {
-        pollVisible(css("html.js-content-ready"));
-    }
-
-    public void waitForShoppinglist() {
-        try {
-            assertPresent(testHook("shoppinglist_quantityshoppinglist"));
-            assertPresentDynamic(
-                    By.xpath("//*[@data-testhookid='shoppinglist_quantityshoppinglist'][contains(@style, 'transform: matrix')]"));
-        } catch (final NoSuchElementException | TimeoutException e) {
-            log.error("Waiting for the shoppinglist to update took too long", e);
-        }
     }
 
     public List<WebElement> elements(final By by) {
@@ -245,20 +157,8 @@ public class BasePage extends CukeConfigurator {
         return es.get(es.size() - 1);
     }
 
-    public boolean presentOneElement(final By by) {
-        return webDriver.findElements(by).size() == 1;
-    }
-
-    public boolean presentOneOrMoreElements(final By by) {
-        return webDriver.findElements(by).size() >= 1;
-    }
-
     private WebElement elementIfVisible(WebElement element) {
         return element.isDisplayed() ? element : null;
-    }
-
-    public int noOfElements(final By by) {
-        return webDriver.findElements(by).size();
     }
 
     public boolean presentAndVisible(final By by) {
@@ -292,8 +192,6 @@ public class BasePage extends CukeConfigurator {
         return new FluentWait<>(t).withTimeout(timeOutInterval, TimeUnit.SECONDS).pollingEvery(500, TimeUnit.MILLISECONDS)
                 .ignoring(NoSuchElementException.class, StaleElementReferenceException.class);
     }
-
-    /* Asserts */
 
     public void assertPath(final String path) {
         pollShortly().until(ExpectedConditions.urlContains(path));
@@ -418,30 +316,6 @@ public class BasePage extends CukeConfigurator {
         }
     }
 
-    public void assertErrorById(String id, String foutmelding) {
-        WebElement error = element(By.id(id));
-        Assert.assertThat(error.getText().contains(foutmelding), CoreMatchers.is(true));
-    }
-
-    public void assertErrorByXpath(String xpath, String foutmelding) {
-        WebElement error = element(By.xpath(xpath));
-        Assert.assertThat(error.getText().contains(foutmelding), CoreMatchers.is(true));
-    }
-
-    private Boolean matchString(final Matcher<String> matcher, final String string) {
-        if (matcher.matches(string)) {
-            return true;
-        }
-        log.info("Waiting for '{}' to match {}", string, matcher);
-        return false;
-    }
-
-    /* Tabs */
-
-    public void focusSecondTab() {
-        focusOnTab(1);
-    }
-
     public void focusOnTab(int tabIndexNo) {
         pollShortly().until(driver -> driver.getWindowHandles().size() > tabIndexNo);
         webDriver.switchTo().window(new ArrayList<>(webDriver.getWindowHandles()).get(tabIndexNo));
@@ -455,29 +329,10 @@ public class BasePage extends CukeConfigurator {
         webDriver.close();
     }
 
-    /**
-     * If the given {@link WebElement element} has focus.
-     *
-     * @param element the target element.
-     */
-    public boolean hasFocus(WebElement element) {
-        return element.equals(webDriver.switchTo().activeElement());
-    }
-
-    /**
-     * Should trigger a javascript .blur event, by sending a TAB key to the given web element.
-     *
-     * @param element the target element.
-     */
-    public void unFocus(WebElement element) {
-        element.sendKeys(Keys.TAB);
-    }
-
     public String getTitle() {
         return webDriver.getTitle();
     }
 
-    /* WebDriver */
     public void turnOnImplicitWaits(final int time, final TimeUnit timeUnit) {
         webDriver.manage().timeouts().implicitlyWait(time, timeUnit);
     }
@@ -500,10 +355,6 @@ public class BasePage extends CukeConfigurator {
 
     public List<WebElement> findElements(final By locator) {
         return webDriver.findElements(locator);
-    }
-
-    public boolean containsInPageSource(final String value) {
-        return webDriver.getPageSource().contains(value);
     }
 
     public void waitForPageToLoad(final By waitForElement) {
@@ -532,22 +383,10 @@ public class BasePage extends CukeConfigurator {
         webDriver.close();
     }
 
-    /**
-     * Navigate to the kvk.nl meldmisbruik page of the given environment
-     *
-     * @param environment subdomain of the environment, eg 'tst'
-     */
     public void navigateToEnvironment(final String environment) throws AWTException {
         navigateToEnvironment(environment, "/");
     }
 
-    /**
-     * Navigate to the given kvk.nl page of an environment
-     * <p>
-     * //* @param environment subdomain of the environment, eg 'tst'
-     *
-     * @param path path to navigate to, should start with a '/'
-     */
     public void navigateToEnvironment(final String environment, final String path) {
         navigateToPage("http://" + environment);
     }
@@ -556,20 +395,12 @@ public class BasePage extends CukeConfigurator {
         navigateToPage("https://cucumber.io/docs/reference/browser-automation");
     }
 
-    public void navigateForward() {
-        webDriver.navigate().forward();
-    }
-
     public void navigateToPage(final String url) {
         webDriver.navigate().to(url);
     }
 
     public void navigateToPage(final URL url) {
         webDriver.navigate().to(url);
-    }
-
-    public String elementGetAttributeHref(final By locator) {
-        return getAttributeOfElement(locator, "href");
     }
 
     public Set<Cookie> getCookies() {
@@ -582,10 +413,6 @@ public class BasePage extends CukeConfigurator {
 
     public void addCookie(final String name, final String value) {
         webDriver.manage().addCookie(new Cookie(name, value));
-    }
-
-    public void isCookieNoticeVisible() {
-        assertButtonVisibleAndEnabled("accept-cookies");
     }
 
     public String getCurrentUrl() {
@@ -627,7 +454,6 @@ public class BasePage extends CukeConfigurator {
         sendKey(locator, Keys.TAB);
     }
 
-    /* inputElementen  */
     public boolean inputElementIsEnabled(final By locator) {
         return findElement(locator).isEnabled();
     }
@@ -642,38 +468,13 @@ public class BasePage extends CukeConfigurator {
         wait.until(isEnabledOfElementLocated(locator, false));
     }
 
-    /**
-     * Click the button given by the locator
-     * Note: alleen voor form fields
-     *
-     * @param locator the locator defining which button to click
-     */
     public void buttonClick(final By locator) {
-        waitForElementVisible(locator);
-        findElement(locator).click();
-    }
-
-    /**
-     * Click the button that has the given data-test attribute
-     * Note: alleen voor form fields
-     *
-     * @param dataTest the value of the data-test attribute
-     */
-    public void buttonClick(final String dataTest) {
-        final By locator = byTestHook(dataTest);
         waitForElementVisible(locator);
         findElement(locator).click();
     }
 
     public void assertButtonVisibleAndEnabled(final By locator) {
         final WebDriverWait wait = getWebDriverWait();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-        wait.until(isEnabledOfElementLocated(locator, true));
-    }
-
-    public void assertButtonVisibleAndEnabled(final String dataTest) {
-        final WebDriverWait wait = getWebDriverWait();
-        By locator = byTestHook(dataTest);
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         wait.until(isEnabledOfElementLocated(locator, true));
     }
@@ -688,18 +489,11 @@ public class BasePage extends CukeConfigurator {
         waitForElementVisible(locator);
     }
 
-
-    public void assertPath(final Matcher<String> matcher) {
-
-        shortFluentWait(element -> matchString(matcher, getCurrentPath()));
-    }
-
     public void returnButtonIsClickable(final By locator) {
         final WebDriverWait wait = getWebDriverWait();
         wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
-    /* checkbox */
     public void checkBoxVisibleAndCheck(final By locator) {
         waitForElementVisible(locator);
         final WebElement element = findElement(locator);
@@ -730,7 +524,6 @@ public class BasePage extends CukeConfigurator {
         return findElement(locator).isSelected();
     }
 
-    /* radiobuttons*/
     public void radioButtonVisibleAndSelect(final By locator) {
         waitForElementVisible(locator);
         findElement(locator).click();
@@ -761,7 +554,6 @@ public class BasePage extends CukeConfigurator {
         return findElement(locator).isSelected();
     }
 
-    /* dropdown (select) */
     public String dropdownGetTextFirstSelected(final By locator) {
         waitForElementVisible(locator);
         WebElement selectedOption = new Select(findElement(locator)).getFirstSelectedOption();
@@ -842,81 +634,7 @@ public class BasePage extends CukeConfigurator {
         Assert.assertTrue("Could not find " + value + " in the dropdown menu", hasFoundValue);
     }
 
-    /* DOM */
-    public void assertDOMContainsInnerText(final By locator, final String value) {
-        final WebDriverWait wait = getWebDriverWait();
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(locator, value));
-    }
 
-    public void assertDOMContainsInnerNumber(final By locator, final String value) {
-        final WebDriverWait wait = getWebDriverWait();
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(locator, value));
-    }
-
-    public void assertDOMContainsAnyInnerText(final By locator) {
-        final WebDriverWait wait = getWebDriverWait();
-        wait.until(anyTextToBePresentInElementLocated(locator));
-    }
-
-    /* field-type Date */
-    public void inputDateSetDate(final By locator, final int year, final int month, final int day) {
-        waitForElementVisible(locator);
-
-        final WebElement element = findElement(locator);
-        element.sendKeys(month + "/" + day + "/" + year);
-    }
-
-    public void inputSetEmail(final By locator, final String email) {
-        waitForElementVisible(locator);
-
-        final WebElement element = findElement(locator);
-        element.sendKeys(email);
-    }
-
-    public void inputDateSetDate(final By locator, final String value) {
-        waitForElementVisible(locator);
-
-        try {
-            final DateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
-            final DateFormat outputFormat = new SimpleDateFormat("MM/dd/yyyy");
-            final Date inputDate = inputFormat.parse(value);
-
-            final WebElement element = findElement(locator);
-            element.sendKeys(outputFormat.format(inputDate));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void inputDateSetValueByName(final String name, final Date value) {
-        final By locator = By.name(name);
-        waitForElementVisible(locator);
-
-        final DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-        final String formattedDate = format.format(value);
-
-        final WebElement element = findElement(locator);
-        element.sendKeys(formattedDate);
-    }
-
-    public String inputDateGetValue(final By locator) {
-        waitForElementVisible(locator);
-        return findElement(locator).getAttribute("value");
-    }
-
-    /* field-type Number */
-    public void inputNumberSetNumber(final By locator, final String value) {
-        assertStringIsNumeric(value);
-        waitForElementVisible(locator);
-        textInputSetText(locator, value);
-    }
-
-    public String inputNumberGetText(final By locator) {
-        waitForElementVisible(locator);
-        return findElement(locator).getAttribute("value");
-    }
-
-    /* TextInput */
     public void textInputSetText(final By locator, final String value) {
         waitForElementVisible(locator);
         final WebElement element = findElement(locator);
@@ -980,7 +698,6 @@ public class BasePage extends CukeConfigurator {
         wait.until(anyTextToBePresentInElementValue(locator));
     }
 
-    /* custom expected conditions */
     private static ExpectedCondition<Boolean> isEnabledOfElementLocated(final By locator, final boolean isEnabled) {
         return new ExpectedCondition<Boolean>() {
             private boolean elementIsEnabled;
@@ -1028,26 +745,6 @@ public class BasePage extends CukeConfigurator {
                 return String.format("text (\'%s\') to be the value of element located by %s", text, locator);
             }
         };
-    }
-
-
-    /**
-     * A selector by the value of the data-test attribute
-     *
-     * @param dataTest
-     * @return
-     */
-    private By byTestHook(String dataTest) {
-        return By.xpath(String.format("//*[@data-test=\"%s\"]", dataTest));
-    }
-
-    // custom assertions
-    private void assertStringIsNumeric(final String value) {
-        try {
-            Integer.parseInt(value);
-        } catch (NumberFormatException exception) {
-            Assert.fail("value should be numeric");
-        }
     }
 
     private void shortFluentWait(final Function<WebDriver, Boolean> function) {

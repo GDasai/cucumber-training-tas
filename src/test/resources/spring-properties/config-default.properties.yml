@@ -15,7 +15,7 @@ timeout.interval.seconds: 15
 
 # set local or remote browser
 browser.name.local: chrome
-browser.name.remote: chrome
+browser.name.remote: firefox
 
 # set local browser driver version. latest is the latest version
 firefox.driver.version: latest

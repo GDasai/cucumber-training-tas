@@ -1,6 +1,6 @@
 @Smoketest
 
-Feature: User wants to visit the website and login
+Feature: User wants to visit the website and login with invalid credentials
   AC 1: The user should be able to enter an username
   AC 2: The user should be able to enter a password
   AC 3: There should be an error message shown if the user tries to login with incorrect credentials
