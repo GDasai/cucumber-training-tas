@@ -6,7 +6,7 @@ Feature: User wants to verify text on the page
   AC 3: There should be an error message shown if the user verifies text which isn't displayed on the page
 
   Scenario: 1 User verifies text on the page
-    Given the user visits the training login page
+    Given the user has opened a browser and visits the training login page
     Then the user is verifying text "LET OP!!" on the page with id "letop"
     And the user is verifying text "!!DIT IS EEN DEMO INLOG PAGINA VOOR DE Fitnesse / Cucumber Training!!" on the page with id "letop2"
     And the user clicks the verklaring button

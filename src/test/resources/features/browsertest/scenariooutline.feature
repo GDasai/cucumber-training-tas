@@ -6,7 +6,7 @@ Feature: User wants to visit the website and login (scenario outline)
   AC 3: There should be an error message shown if the user tries to login with incorrect credentials
 
   Scenario Outline: 1 User logs in with invalid credentials
-    Given the user visits the training login page
+    Given the user has opened a browser and visits the training login page
     When the user enters the username with "<username>"
     And the user enters the password "<password>"
     And the user clicks the signin button

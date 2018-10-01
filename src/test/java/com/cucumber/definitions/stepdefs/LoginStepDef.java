@@ -22,19 +22,9 @@ public class LoginStepDef extends BaseStepDef {
         loginPage = PageFactory.initElements(webDriver, LoginPage.class);
     }
 
-    @Given("^the user visits the training login page$")
-    public void loginCucumberTrainingTestEnv() throws AWTException {
+    @Given("^the user has opened a browser and visits the training login page$")
+    public void openBrowserVisitTrainingLoginPage() throws AWTException {
         loginPage.navigateToEnvironment(cukeconfig.targetHostName);
-    }
-
-    @Given("^the user visits the official Cucumber page$")
-    public void visitOfficialCucumberPage() throws AWTException {
-        loginPage.navigateToWebsite();
-    }
-
-    @When("^the user enters the \"([^\"]*)\" \"([^\"]*)\"")
-    public void enterCredentials(String userid, String username) {
-        loginPage.typeValue(userid, username);
     }
 
     @Then("^the user is on the login page$")
@@ -85,11 +75,6 @@ public class LoginStepDef extends BaseStepDef {
     @And("^the user checks the checkbox$")
     public void theUserChecksTheCheckbox() {
         loginPage.checkCheckbox();
-    }
-
-    @And("^the user selects a different tab on the website$")
-    public void theUserSelectAnItem() {
-        loginPage.theUserClicksALink();
     }
 }
 

@@ -7,7 +7,7 @@ Feature: User wants to visit the website and login (sample.feature)
   AC 4: The user should be on the Cucumber page if the correct credentials are entered
 
   Scenario: 1 User logs in with valid credentials
-    Given the user visits the training login page
+    Given the user has opened a browser and visits the training login page
     When the user enters the username with "cursus"
     And the user enters the password "selenium"
     And the user clicks the signin button

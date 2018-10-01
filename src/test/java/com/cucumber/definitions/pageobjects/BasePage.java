@@ -5,24 +5,8 @@ import com.google.common.base.Function;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matcher;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.NotFoundException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.*;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
@@ -36,11 +20,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
-import static org.openqa.selenium.support.ui.ExpectedConditions.or;
-import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllElementsLocatedBy;
-import static org.openqa.selenium.support.ui.ExpectedConditions.textToBePresentInElementLocated;
-import static org.openqa.selenium.support.ui.ExpectedConditions.urlContains;
-import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 @Slf4j
 @SuppressWarnings("unused")

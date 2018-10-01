@@ -14,10 +14,6 @@ public class LoginPage extends BasePage {
         WebDriverRunner.setWebDriver(webDriver);
     }
 
-    public void typeValue(String locator, String text) {
-        textInputSetText(By.id(locator), text);
-    }
-
     public void clickSignInButton() {
         buttonClick(By.id("SubmitCreds"));
     }
@@ -49,9 +45,5 @@ public class LoginPage extends BasePage {
 
     public void checkCheckbox() {
         checkBoxVisibleAndCheck(By.id("chpwd"));
-    }
-
-    public void theUserClicksALink() {
-        buttonClick(By.xpath("//*[@id=\"main-nav-collapse\"]/ul/li[2]/a"));
     }
 }
