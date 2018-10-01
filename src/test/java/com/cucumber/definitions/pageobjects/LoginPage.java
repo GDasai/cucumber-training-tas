@@ -14,10 +14,6 @@ public class LoginPage extends BasePage {
         WebDriverRunner.setWebDriver(webDriver);
     }
 
-    public void clickSignInButton() {
-        buttonClick(By.id("SubmitCreds"));
-    }
-
     public void verifyPageTitle(String page) {
         String pageTitle = getTitle();
         assertEquals(pageTitle, page);
@@ -31,19 +27,4 @@ public class LoginPage extends BasePage {
         textInputSetText(By.id("username"), username);
     }
 
-    public void enterPassword(String password) {
-        textInputSetText(By.id("password"), password);
-    }
-
-    public void clickVerklaringButton() {
-        buttonClick(By.id("lnkShwSec"));
-    }
-
-    public void clickSecondRadiobutton() {
-        radioButtonVisibleAndSelect(By.id("rdoPrvt"));
-    }
-
-    public void checkCheckbox() {
-        checkBoxVisibleAndCheck(By.id("chpwd"));
-    }
 }
