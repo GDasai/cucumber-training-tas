@@ -739,4 +739,9 @@ public class BasePage extends CukeConfigurator {
             throw new RuntimeException(e);
         }
     }
+
+    public void confirmAlert(){
+        Alert alert = webDriver.switchTo().alert();
+        alert.accept();
+    }
 }
