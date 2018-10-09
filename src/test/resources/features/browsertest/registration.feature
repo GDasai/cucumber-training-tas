@@ -1,4 +1,5 @@
 Feature: Registration
+  AC 1: The user should be able to apply his registration
 
   Scenario: Fill in the registration form
     Given the user has opened a browser and visits the registration page
