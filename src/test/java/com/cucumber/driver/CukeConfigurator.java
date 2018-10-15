@@ -1,5 +1,6 @@
 package com.cucumber.driver;
 
+import com.cucumber.definitions.domain.RegistrationObject;
 import com.cucumber.definitions.pageobjects.BasePage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
@@ -14,6 +15,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
@@ -185,5 +187,10 @@ public class CukeConfigurator {
                 }
             }
         }
+    }
+
+    @Bean
+    public RegistrationObject getRegistrationObject() {
+        return new RegistrationObject();
     }
 }

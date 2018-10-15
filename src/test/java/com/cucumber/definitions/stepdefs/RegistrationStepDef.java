@@ -9,7 +9,6 @@ import org.openqa.selenium.support.PageFactory;
 import javax.annotation.PostConstruct;
 
 public class RegistrationStepDef extends BaseStepDef {
-
     private RegistrationPage registrationPage;
 
     @PostConstruct
@@ -20,6 +19,58 @@ public class RegistrationStepDef extends BaseStepDef {
     @Given("^the user has opened a browser and visits the registration page$")
     public void theUserHasOpenedABrowserAndVisitsTheRegistrationPage() {
         registrationPage.navigateToPage("http://www.testautomationschool.nl/registrationdemo/");
+    }
+
+    @Given("^an user with firstname \"([^\"]*)\"$")
+    public void anUserWithFirstname(String firstName) {
+        registrationObject.setFirstName(firstName);
+    }
+
+    @Given("^an user with prefix \"([^\"]*)\"$")
+    public void anUserWithPrefix(String prefix) {
+        registrationObject.setPrefix(prefix);
+    }
+
+    @Given("^an user with surname \"([^\"]*)\"$")
+    public void anUserWithSurname(String surname) {
+        registrationObject.setSurname(surname);
+    }
+
+    @Given("^an user with date of birth \"([^\"]*)\"$")
+    public void anUserWithDateOfBirth(String date) {
+        registrationObject.setDateOfBirth(date);
+    }
+
+    @Given("^an user with profession \"([^\"]*)\"$")
+    public void anUserWithProfession(String profession) {
+        registrationObject.setProfession(profession);
+    }
+
+    @Given("^an user with \"([^\"]*)\" as gender$")
+    public void anUserWithAsGender(String gender) {
+        registrationObject.setGender(gender);
+    }
+
+    @Given("^an user with emailaddress \"([^\"]*)\"$")
+    public void anUserWithEmailaddress(String email) {
+        registrationObject.setEmail(email);
+    }
+
+    @Given("^an user with remarks \"([^\"]*)\"$")
+    public void anUserWithRemarks(String remarks) {
+        registrationObject.setRemarks(remarks);
+    }
+
+    @When("^the user completes the registration form$")
+    public void theUserCompletesTheRegistrationForm() {
+        registrationPage.enterFirstname(registrationObject.getFirstName());
+        registrationPage.enterPrefix(registrationObject.getPrefix());
+        registrationPage.enterSurname(registrationObject.getSurname());
+        registrationPage.enterDateOfBirth(registrationObject.getDateOfBirth());
+        registrationPage.enterProfession(registrationObject.getProfession());
+        registrationPage.chooseGender(registrationObject.getGender());
+        registrationPage.enterEmail(registrationObject.getEmail());
+        registrationPage.enterRemarks(registrationObject.getRemarks());
     }
 
     @When("^the user enters his firstname with \"([^\"]*)\"$")
