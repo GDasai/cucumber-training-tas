@@ -1,5 +1,6 @@
 package com.cucumber.driver;
 
+import com.cucumber.definitions.domain.RegistrationObject;
 import com.cucumber.definitions.pageobjects.BasePage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
@@ -185,5 +186,10 @@ public class CukeConfigurator {
                 }
             }
         }
+    }
+
+    @Bean
+    public RegistrationObject getRegistrationObject() {
+        return new RegistrationObject();
     }
 }
