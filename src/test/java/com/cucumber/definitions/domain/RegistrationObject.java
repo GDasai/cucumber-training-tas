@@ -13,6 +13,5 @@ public class RegistrationObject {
     private String dateOfBirth;
     private String profession;
     private String gender;
-    private String email;
     private String remarks;
 }
