@@ -11,6 +11,7 @@ import io.restassured.specification.RequestSpecification;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 
 
 public class PersonDataService extends BaseStepDef {
@@ -51,5 +52,10 @@ public class PersonDataService extends BaseStepDef {
     @Then("^verify that person has (\\d+) cars$")
     public void verifyThatPersonHasCars(int cars) {
         response.then().assertThat().body("cars.car", hasSize(cars));
+    }
+
+    @And("^verify that the first cars is blue$")
+    public void verifyThatTheFirstCarsIsBlue() {
+        response.then().assertThat().body("cars[0].color", is("Blue"));
     }
 }
