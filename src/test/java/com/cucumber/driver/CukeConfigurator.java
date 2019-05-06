@@ -90,7 +90,7 @@ public class CukeConfigurator {
                 ChromeDriverManager.getInstance(CHROME).setup();
 
             } else {
-                ChromeDriverManager.getInstance().version(chromeDriverVersion);
+                ChromeDriverManager.getInstance(CHROME).version(chromeDriverVersion);
             }
             final ChromeOptions options = new ChromeOptions();
             if (localBrowserName.toLowerCase().contains("headless")) {
@@ -107,7 +107,7 @@ public class CukeConfigurator {
                 FirefoxDriverManager.getInstance(FIREFOX).setup();
 
             } else {
-                FirefoxDriverManager.getInstance().version(firefoxDriverVersion);
+                FirefoxDriverManager.getInstance(FIREFOX).version(firefoxDriverVersion);
             }
             return new EventFiringWebDriver(new FirefoxDriver());
         }

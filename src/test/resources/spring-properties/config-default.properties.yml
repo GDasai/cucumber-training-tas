@@ -21,7 +21,7 @@ browser.name.remote: firefox
 firefox.driver.version: latest
 # e.g.: 0.19.x
 chrome.driver.version: latest
-# e.g.: 2.35
+# e.g.: 74.0.3729.6
 
 # screensize
 browser.screen.size: default
