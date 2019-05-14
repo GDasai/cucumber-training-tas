@@ -6,6 +6,10 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import cucumber.api.java.nl.Als;
+import cucumber.api.java.nl.Dan;
+import cucumber.api.java.nl.En;
+import cucumber.api.java.nl.Gegeven;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
@@ -22,6 +26,7 @@ public class LoginStepDef extends BaseStepDef {
         loginPage = PageFactory.initElements(webDriver, LoginPage.class);
     }
 
+    @Gegeven("^de gebruiker heeft een browser geopend en bezoekt de login pagina$")
     @Given("^the user has opened a browser and visits the training login page$")
     public void openBrowserVisitTrainingLoginPage() throws AWTException {
         loginPage.navigateToEnvironment(cukeconfig.targetHostName);
@@ -32,11 +37,13 @@ public class LoginStepDef extends BaseStepDef {
         loginPage.verifyPageTitle("Selenium demo pagina");
     }
 
+    @En("^de gebruiker klikt op de aanmelden knop")
     @And("^the user clicks the signin button$")
     public void signIn() {
         loginPage.clickSignInButton();
     }
 
+    @Dan("^komt de gebruiker op de homepagina van de cucumber website$")
     @Then("^the user should be on the default landing page of the cucumber website$")
     public void verifyOnCucumberPage() {
         loginPage.verifyPageTitle("Cucumber");
@@ -75,6 +82,12 @@ public class LoginStepDef extends BaseStepDef {
     @And("^the user checks the checkbox$")
     public void theUserChecksTheCheckbox() {
         loginPage.checkCheckbox();
+    }
+
+    @Als("^de gebruiker inlogt met valide inlog gegevens$")
+    public void loginWithValidCredentials() {
+        loginPage.enterUsername("cursus");
+        loginPage.enterPassword("selenium");
     }
 }
 
