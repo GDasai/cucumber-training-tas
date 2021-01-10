@@ -14,7 +14,7 @@
         <selenium.version>3.4.0</selenium.version>
         <slf4j.version>1.7.25</slf4j.version>
         <info.cukes.version>1.2.5</info.cukes.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <spring.version>4.3.9.RELEASE</spring.version>
         <java.version>1.8</java.version>
         <selenide.version>4.5</selenide.version>
