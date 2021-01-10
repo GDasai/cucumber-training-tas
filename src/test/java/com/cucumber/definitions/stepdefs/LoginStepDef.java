@@ -46,7 +46,7 @@ public class LoginStepDef extends BaseStepDef {
     @Dan("^komt de gebruiker op de homepagina van de cucumber website$")
     @Then("^the user should be on the default landing page of the cucumber website$")
     public void verifyOnCucumberPage() {
-        loginPage.verifyPageTitle("BDD Testing & Collaboration Tools for Teams | ]Cucumber");
+        loginPage.verifyPageTitle("BDD Testing & Collaboration Tools for Teams | Cucumber");
     }
 
     @Then("^the user should receive the following error message \"([^\"]*)\"$")
