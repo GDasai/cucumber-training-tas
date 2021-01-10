@@ -16,7 +16,7 @@ public class LoginPage extends BasePage {
 
     public void verifyPageTitle(String page) {
         String pageTitle = getTitle();
-        assertEquals(pageTitle, page);
+        assertEquals(page, pageTitle);
     }
 
     public void verifyText(By locator, String text) {
